@@ -7,10 +7,10 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
   const [selected, setSelected] = useLocalStorage(`multiSelectOptions-${rowId}`, []);
   const [newOption, setNewOption] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [error, setError] = useState(""); // Error message state
+  const [error, setError] = useState("");
   const dropdownRef = useRef(null);
 
-  // Function to toggle an option in the selection
+  // Function to toggle options in multi-select
   const toggleOption = (option) => {
     const updated = selected.includes(option)
       ? selected.filter((item) => item !== option)
@@ -20,17 +20,15 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
     updateSelectedMultiOptions(rowId, updated);
   };
 
-  // Function to add a new custom option
+  // Function to add new custom options
   const addOption = () => {
     if (!newOption.trim()) return;
 
-    // Check if the option already exists
     if (options.includes(newOption)) {
       setError("This option already exists!");
       return;
     }
 
-    // Check for the maximum limit
     if (options.length >= 8) {
       setError("You can add up to 8 custom options.");
       return;
@@ -39,7 +37,7 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
     const updatedOptions = [...options, newOption];
     setOptions(updatedOptions);
     setNewOption("");
-    setError(""); // Clear any previous error
+    setError("");
   };
 
   // Close dropdown if clicked outside
@@ -47,7 +45,7 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
-        setError(""); // Clear error when clicked outside
+        setError("");
       }
     };
 
@@ -57,7 +55,6 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
 
   return (
     <div className="relative w-full" ref={dropdownRef}>
-      {/* Dropdown toggle and selected options display */}
       <div
         className={`flex items-center justify-between px-3 py-2 border-2 rounded-md cursor-pointer ${dropdownOpen ? "border-blue-500" : "border-gray-300"}`}
         onClick={() => setDropdownOpen((prev) => !prev)}
@@ -87,7 +84,6 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
         </span>
       </div>
 
-      {/* Dropdown list with options and add new option input */}
       {dropdownOpen && (
         <ul className="absolute z-10 mt-2 p-2 bg-gray-100 border rounded-md shadow max-h-60 overflow-auto">
           {options.map((option) => (
@@ -118,7 +114,6 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
         </ul>
       )}
 
-      {/* Error message */}
       {error && <p className="text-red-500 text-sm mt-2 text-center">{error}</p>}
     </div>
   );

@@ -1,25 +1,22 @@
 import { useState, useEffect } from "react";
 import { X } from "lucide-react";
-import { useLocalStorage } from "../hooks/useLocalStorage"; 
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export default function SingleSelect({ rowId, selectedOptions, updateSelectedOptions }) {
-
-  // State to manage the selected option for this specific row
+  // Local state for the selected option
   const [selected, setSelected] = useLocalStorage(`singleSelectOption-${rowId}`, "");
-  
-  // State for available options after filtering out globally selected options
   const [availableOptions, setAvailableOptions] = useState([]);
 
-  // Load available options and globally selected options on mount
+  // Load the options and filter based on globally selected options
   useEffect(() => {
     const defaultOptions = ["Option 1", "Option 2", "Option 3", "Option 4"];
     let storedOptions = JSON.parse(localStorage.getItem("defaultOptions")) || defaultOptions;
-    
+
     const globallySelected = JSON.parse(localStorage.getItem("globallySelectedOptions")) || [];
     setAvailableOptions(storedOptions.filter(option => !globallySelected.includes(option)));
   }, []);
 
-  // Function to handle change in selection and update global state
+  // Function to handle option selection and update localStorage and row state
   const handleChange = (value) => {
     const globallySelected = JSON.parse(localStorage.getItem("globallySelectedOptions")) || [];
     if (value) {

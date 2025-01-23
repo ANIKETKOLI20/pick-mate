@@ -3,11 +3,13 @@ import SingleSelect from "./components/SingleSelect";
 import MultiSelect from "./components/MultiSelect";
 
 export default function App() {
+  // State for managing rows in the table
   const [rows, setRows] = useState([
     { id: "1", singleSelect: "", multiSelect: [] },
-  ]); // State for managing table rows
+  ]);
 
-  const [theme, setTheme] = useState("light"); 
+  // State for managing theme (light/dark)
+  const [theme, setTheme] = useState("light");
 
   // Load saved rows and theme from localStorage when the app initializes
   useEffect(() => {
@@ -21,19 +23,18 @@ export default function App() {
     document.documentElement.setAttribute("data-theme", savedTheme);
   }, []);
 
-// Save rows to localStorage whenever they change
+  // Save rows to localStorage whenever rows change
   useEffect(() => {
     localStorage.setItem("rows", JSON.stringify(rows));
   }, [rows]);
 
   // Save theme to localStorage and apply it
-
   useEffect(() => {
     localStorage.setItem("theme", theme);
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
-  // Add a new row with default values
+  // Function to add a new row
   const addRow = () => {
     setRows([
       ...rows,
@@ -41,7 +42,7 @@ export default function App() {
     ]);
   };
 
-  // Update the single-select value for a specific row
+  // Function to update the selected value of single select for a row
   const updateSingleSelect = (rowId, value) => {
     setRows((prev) =>
       prev.map((row) =>
@@ -50,7 +51,7 @@ export default function App() {
     );
   };
 
-  // Update the multi-select values for a specific row
+  // Function to update the selected multi select values for a row
   const updateMultiSelect = (rowId, values) => {
     setRows((prev) =>
       prev.map((row) =>
@@ -58,7 +59,7 @@ export default function App() {
       )
     );
   };
-  
+
   // Toggle between light and dark themes
   const toggleTheme = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
@@ -66,14 +67,14 @@ export default function App() {
 
   return (
     <div className="p-4">
-      {/* Header and description */}
+      {/* Header */}
       <h1 className="text-3xl font-bold text-center mb-4">PICK MATE</h1>
       <p className="text-center mb-6">
         Customize rows with single and multi-select options. Choices are saved
         locally and persist after refresh.
       </p>
 
-      {/* Theme toggle button */}
+      {/* Button to toggle between light and dark themes */}
       <button
         onClick={toggleTheme}
         className="btn btn-primary mb-4 mx-auto block"
@@ -81,7 +82,7 @@ export default function App() {
         Toggle Theme
       </button>
 
-      {/* Table for rows */}
+      {/* Table structure to display rows */}
       <table className="table-auto w-full border-collapse">
         <thead>
           <tr className="bg-gray-100">
@@ -90,6 +91,7 @@ export default function App() {
           </tr>
         </thead>
         <tbody>
+          {/* Map through rows to display them in the table */}
           {rows.map((row) => (
             <tr
               key={row.id}
@@ -114,7 +116,7 @@ export default function App() {
         </tbody>
       </table>
 
-      {/* Add new row button */}
+      {/* Button to add a new row */}
       <div className="flex justify-end">
         <button
           className="px-4 py-2 m-3 bg-black text-white rounded-lg hover:bg-gray-800 disabled:bg-gray-400"
