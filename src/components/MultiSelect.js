@@ -29,8 +29,8 @@ export default function MultiSelect({ rowId, selectedMultiOptions, updateSelecte
       return;
     }
 
-    if (options.length >= 6) {
-      setError("You can add up to 6 custom options.");
+    if (options.length >= 8) {
+      setError("You can add up to 8 custom options.");
       return;
     }
 
